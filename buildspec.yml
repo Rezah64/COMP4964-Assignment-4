@@ -5,16 +5,17 @@ phases:
     runtime-versions:
       nodejs: 16
     commands:
-      - npm install -g htmlhint stylelint
+      - npm install -g htmlhint
 
   pre_build:
     commands:
-      - echo "Starting tests..."
+      - echo "Starting HTML validation test..."
 
   build:
     commands:
       - echo "Running HTML validation..."
+      - htmlhint index.html || exit 1
 
   post_build:
     commands:
-      - echo "Tests completed successfully!"
+      - echo "HTML validation test completed successfully!"
