@@ -1,0 +1,31 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 16
+    commands:
+      - npm install -g htmlhint stylelint eslint pa11y
+
+  pre_build:
+    commands:
+      - echo "Starting tests..."
+
+  build:
+    commands:
+      - echo "Running HTML validation..."
+      - htmlhint ./*.html || exit 1
+      - echo "Running CSS validation..."
+      - stylelint ./**/*.css || exit 1
+      - echo "Running JavaScript linting..."
+      - eslint ./**/*.js || exit 1
+      - echo "Running accessibility tests..."
+      - pa11y http://resume-website-reza.s3-website-us-west-2.amazonaws.com || exit 1
+
+  post_build:
+    commands:
+      - echo "Tests completed successfully!"
+
+artifacts:
+  files:
+    - "**/*"
